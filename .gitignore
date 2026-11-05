@@ -1,0 +1,17 @@
+# FAT32 sparse image is generated locally (up to 32 GiB logical).
+*.img
+*.img.*
+# Local secrets and machine configuration
+prefer-phone.txt
+.env
+.env.*
+*.local
+backup-*/
+# Runtime and tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+Thumbs.db
+*.log
+*.pid

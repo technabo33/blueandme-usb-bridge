@@ -1,0 +1,14 @@
+# Only used if the distribution does not provide a bluealsa.service.
+[Unit]
+Description=BlueALSA A2DP sink for BlueAndMe bridge
+After=bluetooth.service dbus.service
+Wants=bluetooth.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/bluealsa -p a2dp-sink
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

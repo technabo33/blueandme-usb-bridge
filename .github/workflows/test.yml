@@ -1,0 +1,21 @@
+name: Testes do projeto
+on:
+  push:
+  pull_request:
+
+jobs:
+  source-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compilar sintaxe Python
+        run: python3 -m py_compile app/*.py
+      - name: Validar shell
+        run: bash -n scripts/*.sh app/*.sh
+      - name: Testar gerador FAT32
+        run: python3 -m unittest discover -s tests -v
+      - name: Verificar dados privados antes de publicar
+        run: bash scripts/check-privacy.sh

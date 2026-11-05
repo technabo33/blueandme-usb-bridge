@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0a1018" />
+  <meta name="description" content="Transforma um Raspberry Pi Zero W numa ponte Bluetooth A2DP para a entrada USB original do Blue&Me. Código aberto e guia de instalação gratuito." />
+  <meta property="og:title" content="Blue&Me USB Bluetooth Bridge" />
+  <meta property="og:description" content="Bluetooth moderno. Rádio original. Uma ponte open source com Raspberry Pi Zero W." />
+  <meta property="og:type" content="website" />
+  <title>Blue&Me USB Bluetooth Bridge | Música Bluetooth no rádio original</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Saltar para o conteúdo</a>
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a href="#inicio" class="brand" aria-label="Blue&Me Bridge, início">
+        <span class="brand-symbol">B<span class="bolt">◆</span>M</span>
+        <span>Blue&Me <strong>Bridge</strong></span>
+      </a>
+      <nav aria-label="Menu principal">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#instalar">Instalação</a>
+        <a href="#compatibilidade">Compatibilidade</a>
+        <a href="#perguntas">Perguntas</a>
+      </nav>
+      <a class="button button-outline nav-github" href="https://github.com/technabo33/blueandme-usb-bridge">Código no GitHub ↗</a>
+    </div>
+  </header>
+  <main id="conteudo">
+    <section class="hero container" id="inicio">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="status-dot"></span> Código aberto · v0.5.6 community</div>
+        <h1>Bluetooth moderno.<br><em>Rádio original.</em></h1>
+        <p class="lead">Leva o som do telemóvel para a entrada <strong>USB original</strong> do Blue&Me com um Raspberry Pi Zero W. Sem AUX, sem emissor FM e sem trocar o rádio.</p>
+        <div class="cta">
+          <a class="button button-primary" href="https://github.com/technabo33/blueandme-usb-bridge/blob/main/INSTALL.pt-PT.md">Instalar no Raspberry <span aria-hidden="true">↗</span></a>
+          <a class="button button-outline" href="https://github.com/technabo33/blueandme-usb-bridge">Ver projeto ↗</a>
+        </div>
+        <p class="note">Protótipo independente validado num Alfa Romeo MiTo 2010 com Blue&Me. Compatibilidade com outros carros ainda por testar.</p>
+      </div>
+      <div class="hero-visual" role="img" aria-label="Esquema: telemóvel ligado via Bluetooth a Raspberry Pi Zero W, que se apresenta ao rádio como uma pen USB">
+        <div class="halo halo-one"></div><div class="halo halo-two"></div>
+        <div class="visual-title">A ponte invisível</div>
+        <div class="device phone-device"><span class="device-symbol">♫</span><span class="device-text">Telemóvel<small>Bluetooth A2DP</small></span></div>
+        <div class="connector"><span></span><b>ondas de rádio</b><span></span></div>
+        <div class="device pi-device"><span class="device-symbol">⌘</span><span class="device-text">Raspberry Pi Zero W<small>BlueALSA + USB Gadget</small></span><span class="pulse"></span></div>
+        <div class="connector usb"><span></span><b>FAT32 · USB</b><span></span></div>
+        <div class="device car-device"><span class="device-symbol">▣</span><span class="device-text">Blue&Me original<small>Reprodução de WAV</small></span></div>
+        <div class="visual-foot">Áudio em tempo real · Disco apenas de leitura</div>
+      </div>
+    </section>
+
+    <section class="stats-strip" aria-label="Características principais">
+      <div class="container stats-grid">
+        <div><strong>48</strong><span>faixas WAV virtuais</span></div>
+        <div><strong>24 h</strong><span>biblioteca lógica</span></div>
+        <div><strong>0</strong><span>ficheiros de música gravados</span></div>
+        <div><strong>100%</strong><span>código aberto</span></div>
+      </div>
+    </section>
+
+    <section class="section container" id="como-funciona">
+      <div class="section-heading"><span class="kicker">01 / ARQUITETURA</span><h2>O carro vê uma pen.<br><em>Tu ouves Bluetooth.</em></h2><p>O segredo está em servir dados de áudio em tempo real através de ficheiros WAV virtuais, sem criar gravações permanentes.</p></div>
+      <div class="card-grid three">
+        <article class="feature-card"><span class="feature-icon">01</span><h3>Receção A2DP</h3><p>O telemóvel liga ao Pi através de Bluetooth. O BlueALSA disponibiliza áudio PCM a uma aplicação Python.</p></article>
+        <article class="feature-card"><span class="feature-icon">02</span><h3>FAT32 virtual</h3><p>Uma imagem sparse contém 48 WAV, mas o conteúdo áudio é preenchido durante as leituras USB a partir de um buffer na RAM.</p></article>
+        <article class="feature-card"><span class="feature-icon">03</span><h3>USB mass storage</h3><p>O nbdkit e o controlador g_mass_storage apresentam ao rádio uma unidade FAT32 apenas de leitura.</p></article>
+      </div>
+      <div class="technical-line"><span class="chip">44,1 kHz</span><span class="chip">16-bit stereo PCM</span><span class="chip">BlueZ + BlueALSA</span><span class="chip">Python + nbdkit</span><span class="chip">OverlayFS opcional</span></div>
+    </section>
+
+    <section class="section install-section" id="instalar">
+      <div class="container install-grid">
+        <div class="install-copy">
+          <span class="kicker">02 / COMEÇAR</span>
+          <h2>Uma instalação<br><em>que podes replicar.</em></h2>
+          <p>Preparámos um pacote público com o motor testado, instalador, gerador da imagem FAT32, guia de emparelhamento e ferramentas de diagnóstico.</p>
+          <ol class="steps"><li><b>Prepara o Raspberry.</b><span>Raspberry Pi OS Lite 32-bit, Wi-Fi, SSH e um microSD novo.</span></li><li><b>Instala o projeto.</b><span>Clona o repositório, executa o instalador e reinicia.</span></li><li><b>Emparelha o telemóvel.</b><span>Autoriza-o no Bluetooth e define-o como prioritário.</span></li><li><b>Testa a USB e protege o SD.</b><span>Valida a reprodução antes de ativar OverlayFS.</span></li></ol>
+          <a class="text-link" href="https://github.com/technabo33/blueandme-usb-bridge/blob/main/INSTALL.pt-PT.md">Abrir guia completo de instalação ↗</a>
+        </div>
+        <div class="terminal-card" aria-label="Comandos de instalação">
+          <div class="terminal-top"><div class="dots"><i></i><i></i><i></i></div><span>raspberrypi / terminal</span><button id="copy-install" class="copy-btn" type="button" aria-label="Copiar comandos">Copiar</button></div>
+          <pre><code id="install-code"><span class="term-muted"># Raspberry Pi OS Lite (32-bit)</span>
+<span class="term-prompt">$</span> sudo apt update
+<span class="term-prompt">$</span> sudo apt install -y git
+<span class="term-prompt">$</span> git clone \
+    https://github.com/technabo33/blueandme-usb-bridge.git
+<span class="term-prompt">$</span> cd blueandme-usb-bridge
+<span class="term-prompt">$</span> sudo bash scripts/install.sh
+<span class="term-prompt">$</span> sudo reboot</code></pre>
+          <p><span class="dot-amber"></span> Depois do reboot, segue o guia para emparelhar o teu telemóvel antes de ouvir música.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="compatibilidade">
+      <div class="section-heading"><span class="kicker">03 / TESTES REAIS</span><h2>O que já sabemos.<br><em>E o que falta descobrir.</em></h2><p>Publicamos resultados medidos, sem promessas de compatibilidade universal.</p></div>
+      <div class="card-grid two">
+        <article class="result-card"><span class="tag tag-good">Testado</span><h3>Alfa Romeo MiTo 2010</h3><p>Rádio com sistema Blue&Me original, Raspberry Pi Zero W e telemóvel Android A2DP. Reprodução contínua relatada como estável no veículo de referência.</p><div class="mini-grid"><div><b>~63 s</b><span>USB operacional</span></div><div><b>~79 s</b><span>captura A2DP</span></div></div></article>
+        <article class="result-card"><span class="tag tag-amber">Em validação</span><h3>Outros rádios e telemóveis</h3><p>O leitor precisa de aceitar armazenamento USB FAT32 com WAV PCM. A cache, o emparelhamento e os controladores variam entre marcas e modelos.</p><a class="text-link" href="https://github.com/technabo33/blueandme-usb-bridge/issues">Partilhar um teste de compatibilidade ↗</a></article>
+      </div>
+    </section>
+
+    <section class="section container" id="perguntas">
+      <div class="section-heading"><span class="kicker">04 / PERGUNTAS</span><h2>As respostas <em>essenciais.</em></h2></div>
+      <div class="faq">
+        <details><summary>Preciso de alterar o rádio ou instalar AUX?</summary><p>Não. A ideia é usar a mesma entrada USB que já aceita uma pen. A compatibilidade depende do leitor do automóvel.</p></details>
+        <details><summary>O projeto funciona em qualquer Blue&Me?</summary><p>Não há garantia. O sistema de referência foi um Alfa Romeo MiTo 2010. Outros automóveis e versões de Blue&Me precisam de testes específicos.</p></details>
+        <details><summary>O áudio é gravado no microSD?</summary><p>Não. O motor entrega amostras PCM a partir de um buffer na RAM. A imagem FAT32 é estática, sparse e exportada como apenas de leitura.</p></details>
+        <details><summary>Posso desligar a ignição sem um shutdown manual?</summary><p>O OverlayFS e a proteção da partição de arranque reduzem o risco de corrupção, mas não substituem uma alimentação de 5 V estável nem garantem resistência a todas as falhas.</p></details>
+        <details><summary>Os botões do volante controlam Spotify?</summary><p>Ainda não. Controlos AVRCP através de padrões de leitura USB são uma ideia de investigação futura, não uma funcionalidade atual.</p></details>
+        <details><summary>Quanto custa e posso contribuir?</summary><p>O software está disponível gratuitamente sob licença MIT. Necessitas de Raspberry Pi, microSD, cabo e alimentação. Podes abrir issues e pull requests no GitHub.</p></details>
+      </div>
+    </section>
+
+    <section class="section cta-section"><div class="container cta-box"><span class="kicker">PARTILHA O CONHECIMENTO</span><h2>Mais música. Menos eletrónica desperdiçada.</h2><p>Ajuda a dar uma segunda vida a sistemas de áudio antigos. Experimenta, documenta o resultado e contribui para o projeto.</p><div class="cta"><a class="button button-primary" href="https://github.com/technabo33/blueandme-usb-bridge">Explorar no GitHub ↗</a><a class="button button-outline" href="https://github.com/technabo33/blueandme-usb-bridge/issues">Reportar compatibilidade ↗</a></div></div></section>
+  </main>
+  <footer><div class="container footer-inner"><div><strong>Blue&Me USB Bluetooth Bridge</strong><p>Projeto independente de código aberto. Sem afiliação às marcas referidas.</p></div><div><a href="https://github.com/technabo33/blueandme-usb-bridge/blob/main/LICENSE">Licença MIT</a><a href="https://github.com/technabo33/blueandme-usb-bridge/blob/main/SAFETY.md">Segurança</a><a href="https://github.com/technabo33/blueandme-usb-bridge/blob/main/README.en.md">English</a></div></div></footer>
+  <script src="site.js" defer></script>
+</body>
+</html>
