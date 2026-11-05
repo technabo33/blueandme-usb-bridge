@@ -10,6 +10,8 @@
 
 > **Estado:** motor da v0.5.6 validado em Raspberry Pi Zero W com Alfa Romeo MiTo 2010 e Blue&Me original. O **instalador comunitário**, adaptado para computadores e telemóveis diferentes, foi sujeito a testes de sintaxe e testes de geração FAT32, mas ainda precisa de validação completa numa instalação limpa.
 
+> **Nova pré-release beta:** [v0.6.1-beta.1 — NAVFIX v0.5.8 + WheelControl v0.6.1](https://github.com/technabo33/blueandme-usb-bridge/releases/tag/v0.6.1-beta.1). [Instalação, limites e rollback](beta/v0.6.1-beta.1/README.pt-PT.md). Pacote para a instalação antiga `blueandme-bt-v056.service`; não é uma atualização automática do instalador comunitário abaixo. Ensaios prolongados no carro ainda pendentes.
+
 ## O problema
 
 Alguns sistemas Blue&Me antigos conseguem reproduzir música de uma pen USB, mas não aceitam música Bluetooth A2DP através dessa entrada. Um adaptador Bluetooth USB normal não é reconhecido como biblioteca de música.
@@ -103,7 +105,7 @@ docs/                  website GitHub Pages
 - A virtualização USB exige um controlador USB gadget OTG, não basta um PC genérico.
 - O projeto usa uma imagem FAT32 de **16 GiB lógicos** para 24 horas, mas ocupa muito menos espaço real enquanto continuar *sparse* num sistema compatível.
 - A reprodução de áudio depende da app do telemóvel; o projeto não força o Spotify a iniciar.
-- Os botões do volante **ainda não** controlam o telemóvel.
+- Na versão comunitária v0.5.6, os botões do volante ainda não controlam o telemóvel. O pacote beta separado acrescenta controlo experimental Next/Previous por AVRCP, inferido das leituras WAV, com intervalo mínimo de 9 segundos entre eventos.
 - Ligação automática depende do Android/BlueZ e de emparelhamento anterior.
 
 ## Ajudar o projeto

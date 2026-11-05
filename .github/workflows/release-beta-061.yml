@@ -1,0 +1,40 @@
+name: Publish beta v0.6.1
+on:
+  push:
+    branches: [main]
+    paths: ['beta/v0.6.1-beta.1/**', '.github/workflows/release-beta-061.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate original components
+        working-directory: beta/v0.6.1-beta.1
+        run: |
+          find . -name '*.sh' -exec bash -n {} \;
+          python -m unittest discover -s wheel-v060/tests -v
+          python -m unittest discover -s wheel-v061/tests -v
+          python navfix-v058/test_navfix_v058.py -v
+          sha256sum -c SHA256SUMS
+      - name: Package and publish prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=v0.6.1-beta.1
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo 'Release already exists; not replacing published assets.'
+            exit 0
+          fi
+          mkdir -p release/BlueAndMe_v0.6.1-beta.1
+          cp -R beta/v0.6.1-beta.1/. release/BlueAndMe_v0.6.1-beta.1/
+          find release -type d -name __pycache__ -prune -exec rm -r {} \;
+          cd release
+          zip -qr BlueAndMe_v0.6.1-beta.1.zip BlueAndMe_v0.6.1-beta.1
+          sha256sum BlueAndMe_v0.6.1-beta.1.zip > SHA256SUMS.txt
+          gh release create "$TAG" BlueAndMe_v0.6.1-beta.1.zip SHA256SUMS.txt --target "$GITHUB_SHA" --prerelease --title 'Blue&Me v0.6.1-beta.1 — NAVFIX + WheelControl' --notes-file ../beta/v0.6.1-beta.1/README.pt-PT.md

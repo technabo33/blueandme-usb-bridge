@@ -1,0 +1,18 @@
+[Unit]
+Description=BlueAndMe experimental steering-wheel AVRCP sidecar v0.6.0
+After=local-fs.target bluetooth.service blueandme-bt-v056.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -u /opt/blueandme-wheel-v060/monitor.py
+WorkingDirectory=/opt/blueandme-wheel-v060
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
