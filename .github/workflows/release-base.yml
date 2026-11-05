@@ -1,0 +1,44 @@
+name: Publish clean-install base
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/release-base.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: 17df629c7cde344e5b5473904d673ea43c80864f
+          path: base
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check pinned clean-install source
+        working-directory: base
+        run: |
+          find app scripts -name '*.sh' -exec bash -n {} \;
+          python -m py_compile app/*.py
+          python -m unittest discover -s tests -v
+          bash scripts/check-privacy.sh
+          test -f scripts/install.sh
+          test -f QUICKSTART.pt-PT.md
+          test -f systemd/blueandme-bt.service
+      - name: Package immutable base and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=v0.5.6-community.1
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo 'Base already available; preserving existing assets.'
+            exit 0
+          fi
+          mkdir -p release
+          git -C base archive --format=zip --prefix=BlueAndMe_Base_v0.5.6-community.1/ HEAD > release/BlueAndMe_Base_v0.5.6-community.1.zip
+          cd release
+          sha256sum BlueAndMe_Base_v0.5.6-community.1.zip > SHA256SUMS.txt
+          gh release create "$TAG" BlueAndMe_Base_v0.5.6-community.1.zip SHA256SUMS.txt --target 17df629c7cde344e5b5473904d673ea43c80864f --latest=false --title 'Blue&Me Base v0.5.6-community.1 — instalação limpa' --notes-file ../releases/base-v0.5.6-community.1.md
