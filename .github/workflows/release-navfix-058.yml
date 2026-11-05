@@ -1,0 +1,38 @@
+name: Publish NAVFIX stable reference
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/release-navfix-058.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate original NAVFIX
+        working-directory: beta/v0.6.1-beta.1
+        run: |
+          python navfix-v058/test_navfix_v058.py -v
+          find navfix-v058 -name '*.sh' -exec bash -n {} \;
+          sha256sum -c SHA256SUMS
+      - name: Publish original NAVFIX separately
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=v0.5.8
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo 'Release already exists; not replacing it.'
+            exit 0
+          fi
+          mkdir -p release
+          cp -R beta/v0.6.1-beta.1/navfix-v058 release/
+          find release -type d -name __pycache__ -prune -exec rm -r {} \;
+          cd release
+          zip -qr BlueAndMe_NAVFIX_v058.zip navfix-v058
+          sha256sum BlueAndMe_NAVFIX_v058.zip > SHA256SUMS.txt
+          gh release create "$TAG" BlueAndMe_NAVFIX_v058.zip SHA256SUMS.txt --target "$GITHUB_SHA" --latest --title 'Blue&Me v0.5.8 NAVFIX — estável de referência' --notes-file ../releases/v0.5.8.md

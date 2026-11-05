@@ -10,7 +10,9 @@
 
 > **Estado:** motor da v0.5.6 validado em Raspberry Pi Zero W com Alfa Romeo MiTo 2010 e Blue&Me original. O **instalador comunitário**, adaptado para computadores e telemóveis diferentes, foi sujeito a testes de sintaxe e testes de geração FAT32, mas ainda precisa de validação completa numa instalação limpa.
 
-> **Nova pré-release beta:** [v0.6.1-beta.1 — NAVFIX v0.5.8 + WheelControl v0.6.1](https://github.com/technabo33/blueandme-usb-bridge/releases/tag/v0.6.1-beta.1). [Instalação, limites e rollback](beta/v0.6.1-beta.1/README.pt-PT.md). Pacote para a instalação antiga `blueandme-bt-v056.service`; não é uma atualização automática do instalador comunitário abaixo. Ensaios prolongados no carro ainda pendentes.
+> **Versão estável de referência:** [v0.5.8 NAVFIX](https://github.com/technabo33/blueandme-usb-bridge/releases/tag/v0.5.8). Áudio USB/Bluetooth validado pelo utilizador no MiTo, sem WheelControl. É um patch para a instalação antiga `blueandme-bt-v056.service`; segue o guia incluído no ZIP. A instalação comunitária de raiz abaixo continua na v0.5.6.
+
+> **Pré-release beta disponível em paralelo:** [v0.6.1-beta.1 — NAVFIX v0.5.8 + WheelControl v0.6.1](https://github.com/technabo33/blueandme-usb-bridge/releases/tag/v0.6.1-beta.1). [Instalação, limites e rollback](beta/v0.6.1-beta.1/README.pt-PT.md). Pacote para a instalação antiga `blueandme-bt-v056.service`; não é uma atualização automática do instalador comunitário abaixo. Ensaios prolongados no carro ainda pendentes.
 
 ## O problema
 
